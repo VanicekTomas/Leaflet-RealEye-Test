@@ -1,27 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>OLOMOUC, Czechia</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
-    <!--odkaz na styl pro nadpis-->
-    <link rel="stylesheet" href="nadpis.css">
-
-    <link rel="stylesheet" href="leaflet/leaflet.css"/>
-    <script src="leaflet/leaflet.js"></script>
-
-    <!--ajax pro nahravani geojsonu-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
-
-    <!--odkaz na data v geojsonu-->
-    <script type="text/javascript" src="parkoviste.geojson"></script>
-    <script type="text/javascript" src="bus.geojson"></script>
-    <script type="text/javascript" src="tram.geojson"></script>
-    <script type="text/javascript" src="city_centre.geojson"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Instruction Page</title>
 
     <script type="module">
         import EmbeddedPageSdk from "https://app.realeye.io/sdk/js/testRunnerEmbeddableSdk-1.6.js"
@@ -39,99 +20,11 @@
             const reSdk = new EmbeddedPageSdk(debugMode, stimulusId, forceRun)
         });
     </script>
+        
 </head>
-
 <body>
-
-    <!--nadpis mapy-->
-    <div id="nadpis" data-re-aoi-name="title-OLOMOUC">
-        <h1>OLOMOUC</h1>
-    </div>
-
-    <!--mapa na celou obrazovku-->
-    <div data-re-aoi-name="all-map" id="map" style="width: 100vw; height: 100vh; position: absolute; left:0; top: 0;"></div>
-
-    <script>
-        // funkce, ktera pro kazdy prvek ve vrstve udela nejaou akci
-        function onEachFeature(feature, layer) {
-            layer.bindPopup(feature.properties.name);
-            layer.on('click', function(e) {
-                map.panTo([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
-            });
-        };
-
-        /* data */
-        var bus = L.geoJSON(bus);
-        var tram = L.geoJSON(tram);
-        var city_centre = L.geoJSON(city_centre, { onEachFeature: onEachFeature });
-        var parkoviste = L.geoJSON(parkoviste, { onEachFeature: onEachFeature });
-
-        var icon = new L.Icon({
-            iconUrl: 'icon.png',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15],
-            popupAnchor: [15, 15]
-        });
-        var kgi = L.marker([49.5937203, 17.2652922], { icon: icon }).bindPopup("Department of Geoinformatics");
-
-        /* definice mapy */
-        var map = L.map('map', {
-            center: [49.5869103, 17.2577019],
-            zoom: 13,
-            layers: [city_centre] //co se mi zapne jako prvni
-        });
-
-        /* podkladove mapy */
-        var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            maxZoom: 17,
-            attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)' + ' | Tomáš VANÍČEK'
-        });
-
-        /* jiná podkladová mapa, která podporuje CORS */
-        var baseSatellite = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        });
-
-        /* skupiny vrstev */
-        var baseLayers = {
-            'OpenTopoMap': OpenTopoMap,
-            'Satellite map': baseSatellite,
-        };
-
-        var overlays = {
-            'Bus lines': bus,
-            'Tram lines': tram,
-            'Parking': parkoviste,
-            'Department of Geoinformatics': kgi,
-            'City centre': city_centre,
-        };
-
-        /* funkcionalita */
-        var layerControl = L.control.layers(baseLayers, overlays).addTo(map); //prepinatko vrstev
-        L.control.scale().addTo(map); //meritko
-        baseSatellite.addTo(map); //zakladni mapa, ktera se zobrazi jako prvni
-
-        /*
-        // Function to capture screenshot on map interaction
-        function captureScreenshot() {
-            console.log("Map interaction detected");
-            html2canvas(document.body, { useCORS: true }).then(function(canvas) {
-                console.log("Canvas created");
-                var link = document.createElement('a');
-                link.download = 'map_screenshot.png';
-                link.href = canvas.toDataURL();
-                link.click();
-                console.log("Screenshot downloaded");
-            }).catch(function(err) {
-                console.error("Error capturing screenshot:", err);
-            });
-        }
-
-        map.on('moveend', captureScreenshot);
-        map.on('zoomend', captureScreenshot);
-        map.on('click', captureScreenshot);
-        */
-    </script>
+    <h1>Click on the stimulus you have been instructed to click on</h1>
+    <button onclick="location.href='leaflet.html'">LEAFLET MAP</button>
+    <button onclick="location.href='ukrajina.html'">UKRAJINA</button>
 </body>
 </html>
